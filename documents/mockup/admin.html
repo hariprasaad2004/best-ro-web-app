@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best Water Systems — Admin Operations Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --kent-navy: #1c2f76;
+      --kent-navy-dark: #0f172a;
+      --kent-blue: #1566e0;
+      --kent-blue-light: #0284c7;
+      --emerald: #059669;
+      --emerald-light: #dcfce7;
+      --amber: #d97706;
+      --amber-light: #fef3c7;
+      --crimson: #dc2626;
+      --crimson-light: #fee2e2;
+      --bg-page: #f8fafc;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* TOP HEADER */
+    .admin-header {
+      height: 64px;
+      background: var(--kent-navy-dark);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      color: #ffffff;
+      flex-shrink: 0;
+      z-index: 50;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #0284c7 0%, #1566e0 100%);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .view-site-link {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.2s;
+    }
+    .view-site-link:hover { color: #fff; border-color: #fff; }
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+    }
+    .admin-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    /* MAIN WRAPPER */
+    .admin-layout {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 64px);
+      overflow: hidden;
+    }
+
+    /* SIDEBAR */
+    .admin-sidebar {
+      width: 240px;
+      background: #ffffff;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .nav-list { list-style: none; padding: 16px 10px; display: flex; flex-direction: column; gap: 4px; }
+    .nav-item-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .nav-item-btn:hover { background: #f1f5f9; color: var(--text-main); }
+    .nav-item-btn.active {
+      background: #eff6ff;
+      color: var(--kent-blue);
+      font-weight: 700;
+    }
+    .nav-badge {
+      margin-left: auto;
+      background: var(--crimson-light);
+      color: var(--crimson);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 20px;
+    }
+
+    /* MAIN CONTENT VIEW */
+    .main-view-container {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+
+    /* SPLIT STUDIO LAYOUT */
+    .catalog-panel {
+      flex: 1.15;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-color);
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .inspector-panel {
+      flex: 1.1;
+      display: flex;
+      flex-direction: column;
+      background: #f8fafc;
+      overflow-y: auto;
+    }
+
+    /* CATALOG CONTROLS BAR */
+    .panel-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border-color);
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .panel-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .panel-title { font-size: 1.15rem; font-weight: 800; color: var(--text-main); }
+    .btn-primary {
+      background: var(--kent-blue);
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #0f4bb5; }
+    
+    .brand-filter-strip {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .filter-pill {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .filter-pill.active {
+      background: var(--kent-navy);
+      color: #ffffff;
+      border-color: var(--kent-navy);
+    }
+
+    /* PRODUCT LIST ITEMS */
+    .product-list-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .product-row-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .product-row-item:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+    .product-row-item.selected {
+      border-color: var(--kent-blue);
+      background: #f0f7ff;
+      box-shadow: 0 0 0 1px var(--kent-blue);
+    }
+    .product-thumb-box {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-sm);
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid var(--border-color);
+    }
+    .product-thumb-box img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    .product-row-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .product-row-title {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .product-row-meta {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+    .product-row-pricing {
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .row-current-price {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+    .row-mrp-price {
+      font-size: 0.74rem;
+      color: #94a3b8;
+      text-decoration: line-through;
+    }
+    .row-offer-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-top: 2px;
+      background: var(--amber-light);
+      color: var(--amber);
+    }
+
+    /* INSPECTOR PANEL */
+    .inspector-header {
+      padding: 20px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .inspector-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* SECTION CARD */
+    .form-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-section-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--kent-navy);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* 2-3 MULTI-IMAGE GALLERY UPLOADER */
+    .images-grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .image-slot-box {
+      border: 1.5px dashed #cbd5e1;
+      border-radius: var(--radius-md);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: #f8fafc;
+      position: relative;
+    }
+    .image-slot-box.has-image {
+      border-style: solid;
+      border-color: var(--border-color);
+      background: #ffffff;
+    }
+    .slot-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .slot-preview-area {
+      height: 90px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+    .slot-preview-area img {
+      max-height: 85px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .slot-btn {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      cursor: pointer;
+      color: var(--kent-blue);
+    }
+    .slot-btn:hover { background: #eff6ff; }
+
+    /* OFFER SWITCH BANNER */
+    .offer-toggle-card {
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .toggle-info h4 { font-size: 0.95rem; font-weight: 800; color: #92400e; }
+    .toggle-info p { font-size: 0.8rem; color: #b45309; margin-top: 2px; }
+    
+    /* SWITCH */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1; transition: .25s; border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
+      background-color: white; transition: .25s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--emerald); }
+    input:checked + .slider:before { transform: translateX(22px); }
+
+    .offer-fields-drawer {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed #fde68a;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* FORM INPUTS */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .input-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .text-input, .select-input {
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      font-family: inherit;
+      color: var(--text-main);
+      background: #ffffff;
+    }
+    .text-input:focus, .select-input:focus {
+      outline: none;
+      border-color: var(--kent-blue);
+      box-shadow: 0 0 0 3px rgba(21, 102, 224, 0.12);
+    }
+
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+    /* ACTION BAR AT BOTTOM */
+    .inspector-actions-bar {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .btn-delete {
+      background: #fee2e2;
+      color: var(--crimson);
+      border: 1px solid #fecaca;
+      padding: 9px 16px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-right: auto;
+    }
+    .btn-delete:hover { background: #fca5a5; }
+
+    /* TOAST */
+    .toast-popup {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 999;
+    }
+    .toast-popup.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ENQUIRIES / ANALYTICS ALTERNATE VIEWS (Hidden by default) */
+    .full-screen-view {
+      display: none;
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+    }
+    .full-screen-view.active { display: block; }
+    .table-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    .admin-table th {
+      background: #f8fafc;
+      padding: 12px 16px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+    }
+    .admin-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .status-badge {
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+    .status-new { background: #fef3c7; color: #b45309; }
+    .status-contacted { background: #e0f2fe; color: #0369a1; }
+    .status-converted { background: #dcfce7; color: #15803d; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. TOP GLOBAL HEADER -->
+  <header class="admin-header">
+    <div class="header-brand">
+      <span>💧 BEST WATER SYSTEMS</span>
+      <span class="brand-badge">ADMIN STUDIO</span>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="view-site-link" target="_blank">🌐 Live Website ↗</a>
+      <div class="admin-profile">
+        <div class="admin-avatar">HP</div>
+        <span>Hari Prasaad (Manager)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. MAIN LAYOUT -->
+  <div class="admin-layout">
+    
+    <!-- LEFT NAVIGATION -->
+    <nav class="admin-sidebar">
+      <ul class="nav-list">
+        <li>
+          <button class="nav-item-btn active" onclick="switchNavTab('products')">
+            <span>📦</span> Products & Offers
+          </button>
+        </li>
+        <li>
+          <button class="nav-item-btn" onclick="switchNavTab('enquiries')">
+            <span>📥</span> Enquiries
+            <span class="nav-badge" id="enquiry-count-badge">3 New</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-item-btn" onclick="switchNavTab('analytics')">
+            <span>📈</span> Flow & Reach
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- 3. VIEW 1: PRODUCTS & OFFERS STUDIO (SPLIT PANE) -->
+    <main class="main-view-container" id="view-products">
+      
+      <!-- LEFT CATALOG PANEL -->
+      <section class="catalog-panel">
+        <div class="panel-header">
+          <div class="panel-title-row">
+            <h2 class="panel-title">Product Inventory (<span id="total-models-count">20</span>)</h2>
+            <button class="btn-primary" onclick="createNewProduct()">+ Add Product</button>
+          </div>
+          <!-- Brand filter strip -->
+          <div class="brand-filter-strip">
+            <button class="filter-pill active" onclick="filterByBrand('all', this)">All (20)</button>
+            <button class="filter-pill" onclick="filterByBrand('kent', this)">🔷 KENT (7)</button>
+            <button class="filter-pill" onclick="filterByBrand('olivar', this)">🌿 OLIVAR (4)</button>
+            <button class="filter-pill" onclick="filterByBrand('nile', this)">💧 NILE (3)</button>
+            <button class="filter-pill" onclick="filterByBrand('softener', this)">🚿 Softeners (6)</button>
+          </div>
+        </div>
+
+        <!-- Scrollable Product List -->
+        <div class="product-list-scroll" id="product-items-list">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </section>
+
+      <!-- RIGHT LIVE INSPECTOR PANEL -->
+      <section class="inspector-panel" id="inspector-panel">
+        <div class="inspector-header">
+          <div>
+            <h3 style="font-size:1.1rem; font-weight:800;" id="inspect-title">Oliver One S1 Smart WiFi</h3>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700;" id="inspect-brand-tag">BRAND: OLIVAR</span>
+          </div>
+          <span class="status-badge status-converted" id="inspect-stock-badge">IN STOCK</span>
+        </div>
+
+        <div class="inspector-body">
+          
+          <!-- MULTI-IMAGE GALLERY (2-3 PHOTOS) -->
+          <div class="form-card">
+            <div class="card-section-title">
+              <span>📸 Product Gallery (2–3 Images)</span>
+              <span style="font-size:0.75rem; color:var(--text-muted);">WebP / High-Res</span>
+            </div>
+            
+            <div class="images-grid-container">
+              <!-- Photo 1: Hero Front -->
+              <div class="image-slot-box has-image">
+                <span class="slot-label">⭐ 1. Hero Front</span>
+                <div class="slot-preview-area">
+                  <img id="slot-img-1" src="images/kent-grand-plus.webp" alt="Photo 1">
+                </div>
+                <button class="slot-btn" onclick="changeImageSlot(1)">Change Photo</button>
+              </div>
+
+              <!-- Photo 2: Inside / Tank View -->
+              <div class="image-slot-box has-image">
+                <span class="slot-label">2. Tank / Inside</span>
+                <div class="slot-preview-area">
+                  <img id="slot-img-2" src="images/kent-prime-plus.webp" alt="Photo 2">
+                </div>
+                <button class="slot-btn" onclick="changeImageSlot(2)">Change Photo</button>
+              </div>
+
+              <!-- Photo 3: Kitchen Mount Angle -->
+              <div class="image-slot-box has-image">
+                <span class="slot-label">3. Kitchen Mount</span>
+                <div class="slot-preview-area">
+                  <img id="slot-img-3" src="images/kent-sapphire-iot.webp" alt="Photo 3">
+                </div>
+                <button class="slot-btn" onclick="changeImageSlot(3)">Change Photo</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- FESTIVE OFFER & PROMOTIONS CARD -->
+          <div class="offer-toggle-card">
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <h4>🎉 Active Promotional Offer</h4>
+                <p>Activate festival discounts and deal ribbons on this product</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="offer-toggle-input" onchange="toggleOfferState(this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- Conditional Offer Fields -->
+            <div class="offer-fields-drawer" id="offer-fields-box">
+              <div class="input-group">
+                <label class="input-label">Offer Selling Price (₹)</label>
+                <input type="number" class="text-input" id="inp-offer-price" value="20999" oninput="recalcDiscount()">
+              </div>
+              <div class="input-group">
+                <label class="input-label">Offer Badge Ribbon</label>
+                <select class="select-input" id="inp-offer-badge">
+                  <option value="FESTIVE ₹2,000 OFF">FESTIVE ₹2,000 OFF</option>
+                  <option value="DIWALI SPECIAL">DIWALI SPECIAL</option>
+                  <option value="FREE PRE-FILTER INCLUDED">FREE PRE-FILTER INCLUDED</option>
+                  <option value="15% OFF THIS WEEK">15% OFF THIS WEEK</option>
+                </select>
+              </div>
+              <div class="input-group" style="grid-column: span 2;">
+                <label class="input-label">Bonus Customer Perk (Checkboxes)</label>
+                <div style="display:flex; gap:16px; margin-top:6px; font-size:0.82rem;">
+                  <label><input type="checkbox" checked id="chk-perk-tds"> Free Digital TDS Meter</label>
+                  <label><input type="checkbox" checked id="chk-perk-install"> Free Zero-Cost Installation</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STANDARD PRICING & BASIC SPECS -->
+          <div class="form-card">
+            <div class="card-section-title">💰 Standard Pricing & Stock</div>
+            <div class="form-grid-3">
+              <div class="input-group">
+                <label class="input-label">MRP (₹)</label>
+                <input type="number" class="text-input" id="inp-mrp" value="25999">
+              </div>
+              <div class="input-group">
+                <label class="input-label">Standard Price (₹)</label>
+                <input type="number" class="text-input" id="inp-regular-price" value="22999">
+              </div>
+              <div class="input-group">
+                <label class="input-label">Stock Status</label>
+                <select class="select-input" id="inp-stock-status">
+                  <option value="in_stock">In Stock (Available)</option>
+                  <option value="out_of_stock">Out of Stock (Sold Out)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- SPECIFICATIONS CARD -->
+          <div class="form-card">
+            <div class="card-section-title">⚙️ Machine Specifications</div>
+            <div class="form-grid-3">
+              <div class="input-group">
+                <label class="input-label">Storage Tank</label>
+                <input type="text" class="text-input" id="inp-tank" value="10 Litres">
+              </div>
+              <div class="input-group">
+                <label class="input-label">Flow Rate</label>
+                <input type="text" class="text-input" id="inp-flow" value="12 L/hr">
+              </div>
+              <div class="input-group">
+                <label class="input-label">Max Inlet TDS</label>
+                <input type="text" class="text-input" id="inp-tds" value="Up to 2000 ppm">
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTION BUTTONS -->
+          <div class="inspector-actions-bar">
+            <button class="btn-delete" onclick="deleteCurrentProduct()">🗑️ Delete Model</button>
+            <button class="btn-secondary" onclick="resetCurrentEdits()">Reset</button>
+            <button class="btn-primary" onclick="saveProductChanges()">💾 Save Changes</button>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 4. VIEW 2: ENQUIRIES INBOX -->
+    <section class="full-screen-view" id="view-enquiries">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+        <h2 style="font-size:1.3rem; font-weight:800;">Customer Enquiries Inbox (Free Water Test)</h2>
+        <button class="btn-primary" onclick="exportEnquiriesCSV()">⬇ Export to CSV</button>
+      </div>
+
+      <div class="table-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date / Time</th>
+              <th>Customer Name</th>
+              <th>WhatsApp Phone</th>
+              <th>Locality / Town</th>
+              <th>Water Source</th>
+              <th>Preferred Brand</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="enquiries-tbody">
+            <tr>
+              <td>Today, 2:15 PM</td>
+              <td><strong>Karthik Ramanathan</strong></td>
+              <td>+91 98427 25958</td>
+              <td>Perundurai Road</td>
+              <td>Deep Borewell (1400 ppm)</td>
+              <td>OLIVAR One S1 (WiFi)</td>
+              <td><span class="status-badge status-new">NEW</span></td>
+              <td><a href="https://wa.me/919842725958" target="_blank" class="slot-btn" style="color:#059669;">WhatsApp</a></td>
+            </tr>
+            <tr>
+              <td>Today, 11:30 AM</td>
+              <td><strong>Priya Murugesan</strong></td>
+              <td>+91 94430 12345</td>
+              <td>Thindal, Erode</td>
+              <td>Corporation Tap</td>
+              <td>KENT Grand Plus</td>
+              <td><span class="status-badge status-contacted">CONTACTED</span></td>
+              <td><a href="https://wa.me/919443012345" target="_blank" class="slot-btn" style="color:#059669;">WhatsApp</a></td>
+            </tr>
+            <tr>
+              <td>Yesterday</td>
+              <td><strong>Senthil Kumar</strong></td>
+              <td>+91 98940 67890</td>
+              <td>Bhavani Main Rd</td>
+              <td>Borewell (Hard Scale)</td>
+              <td>Autosoft 25L Softener</td>
+              <td><span class="status-badge status-converted">CONVERTED</span></td>
+              <td><a href="https://wa.me/919894067890" target="_blank" class="slot-btn" style="color:#059669;">WhatsApp</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. VIEW 3: FLOW & REACH ANALYTICS -->
+    <section class="full-screen-view" id="view-analytics">
+      <h2 style="font-size:1.3rem; font-weight:800; margin-bottom:18px;">Website Flow & Reach Analytics (Last 30 Days)</h2>
+      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:24px;">
+        <div class="form-card">
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:800;">TOTAL PAGE VIEWS</div>
+          <div style="font-size:1.8rem; font-weight:900; color:var(--kent-blue); margin-top:6px;">2,450</div>
+          <div style="font-size:0.75rem; color:var(--emerald); margin-top:4px;">↑ +18% from last month</div>
+        </div>
+        <div class="form-card">
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:800;">WHATSAPP CLICKS</div>
+          <div style="font-size:1.8rem; font-weight:900; color:var(--emerald); margin-top:6px;">142</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Direct chat inquiries</div>
+        </div>
+        <div class="form-card">
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:800;">PHONE CALL CLICKS</div>
+          <div style="font-size:1.8rem; font-weight:900; color:var(--kent-navy); margin-top:6px;">88</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">To showroom hotline</div>
+        </div>
+        <div class="form-card">
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:800;">FORM SUBMISSIONS</div>
+          <div style="font-size:1.8rem; font-weight:900; color:var(--amber); margin-top:6px;">58</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Conversion: 2.36%</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast-popup" id="toast-msg">
+    <span>✓ Changes saved successfully</span>
+  </div>
+
+  <!-- CLIENT SCRIPT -->
+  <script>
+    // 20 Core Models Database
+    let catalog = [
+      {
+        id: "oli-s1",
+        title: "Oliver One S1 Smart WiFi",
+        brand: "olivar",
+        category: "Purifier",
+        mrp: 25999,
+        price: 22999,
+        offerActive: true,
+        offerPrice: 20999,
+        offerBadge: "FESTIVE ₹2,000 OFF",
+        tank: "10 Litres",
+        flow: "12 L/hr",
+        tds: "Up to 2000 ppm",
+        stock: "in_stock",
+        images: ["images/kent-grand-plus.webp", "images/kent-prime-plus.webp", "images/kent-sapphire-iot.webp"]
+      },
+      {
+        id: "oli-volcano",
+        title: "Oliver Volcano 18 LPH",
+        brand: "olivar",
+        category: "Purifier",
+        mrp: 24500,
+        price: 21499,
+        offerActive: false,
+        offerPrice: 21499,
+        offerBadge: "HIGH RECOVERY",
+        tank: "10 Litres",
+        flow: "18 L/hr",
+        tds: "Up to 2000 ppm",
+        stock: "in_stock",
+        images: ["images/kent-prime-plus.webp", "images/kent-grand-plus.webp", "images/kent-sapphire-iot.webp"]
+      },
+      {
+        id: "kent-grand-plus",
+        title: "KENT Grand Plus Mineral RO™",
+        brand: "kent",
+        category: "Purifier",
+        mrp: 21500,
+        price: 18499,
+        offerActive: false,
+        offerPrice: 18499,
+        offerBadge: "BESTSELLER",
+        tank: "9 Litres",
+        flow: "20 L/hr",
+        tds: "Up to 2000 ppm",
+        stock: "in_stock",
+        images: ["images/kent-grand-plus.webp", "images/kent-prime-plus.webp", "images/kent-sapphire-iot.webp"]
+      },
+      {
+        id: "kent-pearl-iot",
+        title: "KENT Pearl IoT (11L Detachable)",
+        brand: "kent",
+        category: "Purifier",
+        mrp: 23500,
+        price: 21000,
+        offerActive: true,
+        offerPrice: 19999,
+        offerBadge: "DIWALI SPECIAL",
+        tank: "11 Litres Detachable",
+        flow: "20 L/hr",
+        tds: "Up to 2000 ppm",
+        stock: "in_stock",
+        images: ["images/kent-sapphire-iot.webp", "images/kent-grand-plus.webp", "images/kent-prime-plus.webp"]
+      },
+      {
+        id: "nile-era",
+        title: "Nile Era Advance 7-Stage",
+        brand: "nile",
+        category: "Purifier",
+        mrp: 12000,
+        price: 9500,
+        offerActive: true,
+        offerPrice: 8999,
+        offerBadge: "BEST VALUE",
+        tank: "10 Litres",
+        flow: "12 L/hr",
+        tds: "Up to 2000 ppm",
+        stock: "in_stock",
+        images: ["images/kent-prime-plus.webp", "images/kent-grand-plus.webp", "images/kent-sapphire-iot.webp"]
+      },
+      {
+        id: "soft-25l",
+        title: "Autosoft 25L Whole House",
+        brand: "softener",
+        category: "Softener",
+        mrp: 32500,
+        price: 28500,
+        offerActive: true,
+        offerPrice: 25999,
+        offerBadge: "SAVE ₹2,500",
+        tank: "25L Resin (35kg Brine)",
+        flow: "2000 L/hr",
+        tds: "Up to 1000 ppm Hardness",
+        stock: "in_stock",
+        images: ["images/kent-autosoft-25l.webp", "images/kent-autosoft-40l.webp", "images/kent-bathroom-softener.webp"]
+      }
+    ];
+
+    let currentSelectedId = "oli-s1";
+    let activeBrandFilter = "all";
+
+    function renderProductList() {
+      const container = document.getElementById('product-items-list');
+      container.innerHTML = '';
+
+      const filtered = catalog.filter(p => activeBrandFilter === 'all' || p.brand === activeBrandFilter);
+      document.getElementById('total-models-count').innerText = filtered.length;
+
+      filtered.forEach(p => {
+        const isSelected = p.id === currentSelectedId;
+        const currentPrice = p.offerActive ? p.offerPrice : p.price;
+
+        const row = document.createElement('div');
+        row.className = `product-row-item ${isSelected ? 'selected' : ''}`;
+        row.onclick = () => selectProduct(p.id);
+
+        row.innerHTML = `
+          <div class="product-thumb-box">
+            <img src="${p.images[0]}" alt="${p.title}">
+          </div>
+          <div class="product-row-info">
+            <div class="product-row-title">${p.title}</div>
+            <div class="product-row-meta">${p.brand.toUpperCase()} • ${p.tank}</div>
+            ${p.offerActive ? `<span class="row-offer-tag">${p.offerBadge}</span>` : ''}
+          </div>
+          <div class="product-row-pricing">
+            <div class="row-current-price">₹${currentPrice.toLocaleString()}</div>
+            <div class="row-mrp-price">₹${p.mrp.toLocaleString()}</div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function selectProduct(id) {
+      currentSelectedId = id;
+      const product = catalog.find(p => p.id === id);
+      if (!product) return;
+
+      // Populate Inspector
+      document.getElementById('inspect-title').innerText = product.title;
+      document.getElementById('inspect-brand-tag').innerText = `BRAND: ${product.brand.toUpperCase()}`;
+      document.getElementById('inspect-stock-badge').innerText = product.stock === 'in_stock' ? 'IN STOCK' : 'OUT OF STOCK';
+      document.getElementById('inspect-stock-badge').className = `status-badge ${product.stock === 'in_stock' ? 'status-converted' : 'status-new'}`;
+
+      // Images
+      document.getElementById('slot-img-1').src = product.images[0] || 'images/kent-grand-plus.webp';
+      document.getElementById('slot-img-2').src = product.images[1] || 'images/kent-prime-plus.webp';
+      document.getElementById('slot-img-3').src = product.images[2] || 'images/kent-sapphire-iot.webp';
+
+      // Pricing & Offers
+      document.getElementById('inp-mrp').value = product.mrp;
+      document.getElementById('inp-regular-price').value = product.price;
+      document.getElementById('inp-stock-status').value = product.stock;
+
+      const offerToggle = document.getElementById('offer-toggle-input');
+      offerToggle.checked = product.offerActive;
+      toggleOfferState(product.offerActive);
+
+      document.getElementById('inp-offer-price').value = product.offerPrice;
+      document.getElementById('inp-offer-badge').value = product.offerBadge;
+
+      // Specs
+      document.getElementById('inp-tank').value = product.tank;
+      document.getElementById('inp-flow').value = product.flow;
+      document.getElementById('inp-tds').value = product.tds;
+
+      renderProductList();
+    }
+
+    function toggleOfferState(isOn) {
+      const drawer = document.getElementById('offer-fields-box');
+      drawer.style.display = isOn ? 'grid' : 'none';
+    }
+
+    function changeImageSlot(slotNum) {
+      const newUrl = prompt(`Enter URL or filename for Image #${slotNum}:`, `images/kent-grand-plus.webp`);
+      if (newUrl) {
+        document.getElementById(`slot-img-1`).src;
+        document.getElementById(`slot-img-${slotNum}`).src = newUrl;
+        const currentProd = catalog.find(p => p.id === currentSelectedId);
+        if (currentProd) currentProd.images[slotNum - 1] = newUrl;
+        showToast(`Image #${slotNum} updated!`);
+      }
+    }
+
+    function saveProductChanges() {
+      const current = catalog.find(p => p.id === currentSelectedId);
+      if (!current) return;
+
+      current.mrp = parseInt(document.getElementById('inp-mrp').value);
+      current.price = parseInt(document.getElementById('inp-regular-price').value);
+      current.stock = document.getElementById('inp-stock-status').value;
+
+      current.offerActive = document.getElementById('offer-toggle-input').checked;
+      current.offerPrice = parseInt(document.getElementById('inp-offer-price').value);
+      current.offerBadge = document.getElementById('inp-offer-badge').value;
+
+      current.tank = document.getElementById('inp-tank').value;
+      current.flow = document.getElementById('inp-flow').value;
+      current.tds = document.getElementById('inp-tds').value;
+
+      renderProductList();
+      showToast(`✓ Saved changes for ${current.title}`);
+    }
+
+    function deleteCurrentProduct() {
+      if (confirm(`Are you sure you want to delete ${document.getElementById('inspect-title').innerText}?`)) {
+        catalog = catalog.filter(p => p.id !== currentSelectedId);
+        if (catalog.length > 0) currentSelectedId = catalog[0].id;
+        renderProductList();
+        selectProduct(currentSelectedId);
+        showToast("Model deleted from catalog");
+      }
+    }
+
+    function createNewProduct() {
+      const title = prompt("Enter New Model Name:", "Oliver S2 IoT Supreme");
+      if (!title) return;
+      const brand = prompt("Enter Brand (kent / olivar / nile / softener):", "olivar").toLowerCase();
+      
+      const newId = "custom-" + Date.now();
+      catalog.unshift({
+        id: newId,
+        title: title,
+        brand: brand,
+        category: "Purifier",
+        mrp: 24000,
+        price: 19999,
+        offerActive: false,
+        offerPrice: 19999,
+        offerBadge: "NEW LAUNCH",
+        tank: "10 Litres",
+        flow: "15 L/hr",
+        tds: "Up to 2000 ppm",
+        stock: "in_stock",
+        images: ["images/kent-grand-plus.webp", "images/kent-prime-plus.webp", "images/kent-sapphire-iot.webp"]
+      });
+      selectProduct(newId);
+      showToast(`Added new product: ${title}`);
+    }
+
+    function filterByBrand(brand, el) {
+      activeBrandFilter = brand;
+      document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+      renderProductList();
+    }
+
+    function switchNavTab(tabName) {
+      document.querySelectorAll('.nav-item-btn').forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      document.getElementById('view-products').style.display = tabName === 'products' ? 'flex' : 'none';
+      document.getElementById('view-enquiries').style.display = tabName === 'enquiries' ? 'block' : 'none';
+      document.getElementById('view-analytics').style.display = tabName === 'analytics' ? 'block' : 'none';
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('toast-msg');
+      toast.innerText = text;
+      toast.classList.add('visible');
+      setTimeout(() => toast.classList.remove('visible'), 2800);
+    }
+
+    function exportEnquiriesCSV() {
+      showToast("Downloading enquiries_erode_leads.csv...");
+    }
+
+    // Initialize
+    window.onload = () => {
+      renderProductList();
+      selectProduct(currentSelectedId);
+    };
+  </script>
+</body>
+</html>

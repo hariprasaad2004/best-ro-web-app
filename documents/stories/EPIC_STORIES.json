@@ -1,0 +1,111 @@
+{
+  "project": "Best Water Systems - Kent RO Authorized Partner Platform",
+  "version": "1.0.0",
+  "epics": [
+    {
+      "id": "EPIC-1",
+      "title": "Product Discovery & Interactive Catalog",
+      "stories": [
+        {
+          "id": "BWS-101",
+          "title": "Primary Category Filtering (Purifiers vs Softeners)",
+          "persona": "Prospective Homeowner",
+          "priority": "P0",
+          "component": "filter-tabs-wrapper",
+          "status": "Ready",
+          "acceptance": "Clicking category tab filters products without page refresh."
+        },
+        {
+          "id": "BWS-102",
+          "title": "Real Photographic Product Imagery",
+          "persona": "Visual Shopper",
+          "priority": "P0",
+          "component": "card-img-wrapper",
+          "status": "Ready",
+          "acceptance": "Renders authentic webp photographs for all 15 sample products."
+        },
+        {
+          "id": "BWS-103",
+          "title": "Interactive Subcategory Pills",
+          "persona": "Health-Conscious Buyer",
+          "priority": "P1",
+          "component": "subcat-pills-row",
+          "status": "Ready",
+          "acceptance": "Filters for Mineral RO, Alkaline, IoT Smart, Whole House Autosoft."
+        }
+      ]
+    },
+    {
+      "id": "EPIC-2",
+      "title": "Product Inspection & Live Modals",
+      "stories": [
+        {
+          "id": "BWS-201",
+          "title": "Technical Specifications Modal",
+          "persona": "Engineer / Water Quality Evaluator",
+          "priority": "P1",
+          "component": "specs-modal",
+          "status": "Ready",
+          "acceptance": "Opens on 'Specs' click with flow rate, capacity, TDS limit, dimensions, warranty."
+        },
+        {
+          "id": "BWS-202",
+          "title": "Price & Rating Sorting",
+          "persona": "Value-Focused Customer",
+          "priority": "P2",
+          "component": "catalog-sort",
+          "status": "Ready",
+          "acceptance": "Sorts in real-time by price ascending/descending and customer rating."
+        }
+      ]
+    },
+    {
+      "id": "EPIC-3",
+      "title": "Lead Generation & Doorstep Demo Booking",
+      "stories": [
+        {
+          "id": "BWS-301",
+          "title": "1-Click Free Home Demo Request",
+          "persona": "Local Resident (Erode / Tamil Nadu)",
+          "priority": "P0",
+          "component": "demo-modal",
+          "status": "Ready",
+          "acceptance": "Submits name, WhatsApp, address, water source; logs lead with confirmation."
+        },
+        {
+          "id": "BWS-302",
+          "title": "Right Edge Sticky Floating Action Stack",
+          "persona": "Mobile & Desktop Browser",
+          "priority": "P0",
+          "component": "floating-stack",
+          "status": "Ready",
+          "acceptance": "Provides fixed 3-item access: Book Demo pill, WhatsApp, Call Agent."
+        }
+      ]
+    },
+    {
+      "id": "EPIC-4",
+      "title": "Brand Identity & Responsive Header",
+      "stories": [
+        {
+          "id": "BWS-401",
+          "title": "BPK Official Logo Badge Integration",
+          "persona": "Brand Stakeholder",
+          "priority": "P0",
+          "component": "brand-badge",
+          "status": "Ready",
+          "acceptance": "Displays logo-transparent.png in frosted glass badge without navbar overlap."
+        },
+        {
+          "id": "BWS-402",
+          "title": "Festive Campaign Hero Carousel",
+          "persona": "First-Time Visitor",
+          "priority": "P1",
+          "component": "hero-banner-section",
+          "status": "Ready",
+          "acceptance": "Features woman in saree, purifier, diya background, and 3-dot pagination."
+        }
+      ]
+    }
+  ]
+}
